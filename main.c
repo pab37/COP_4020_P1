@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "global.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-	parse();
+	parse(argv[1]);
 	
 }

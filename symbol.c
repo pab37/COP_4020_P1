@@ -1,2 +1,4 @@
-#include "global.h"
+#include "symbol.h"
+
+
 

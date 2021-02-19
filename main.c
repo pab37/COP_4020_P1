@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "global.h"
+#include "parse.h"
 
 int main(int argc, char* argv[])
 {

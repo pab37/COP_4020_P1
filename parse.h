@@ -1,5 +1,5 @@
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef PARSE_H
+#define PARSE_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,24 +16,21 @@
 int tokenVal;
 int lineNo;
 int lookahead;
+char expression[500];
+const char delimiter [] = " ~;.";
+char *token;
 
 FILE * fp;
 
-struct entry
+/*struct entry
 {
 	char *lexPtr;
 	int token;
-};
+};*/
 
-struct entry symTable[1000];
-char expression[500];
-
-void showError(char *, int);
-void parse();
-int insert(char s[], int);
-int lookup(char s[]);
-void emit(int, int);
-void init();
+void parse(char*);
+void match(int t, char * message);
+//int lookup(char s[]);
 void showLexemes();
 void parseFile(FILE *fp, char* delimiter);
 	

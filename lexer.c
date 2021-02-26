@@ -1,61 +1,118 @@
 #include "lexer.h"
 
+void processFile(char *fp)
+{
+	printf("opening file");
+	input = fopen(fp,"r+");
+}
+
 int lexan()
 {
 	char ch;
 	
-	while(1)
+	while(true)
 	{
-		ch = getchar();
+		ch = fgetc(input);
 		if(ch == ' ' || ch == '\t')
 		{
-			;//do nothing
+			continue;//do nothing
+
 		}else if(ch == '\n')
 		{
 			lineNo++;
+			continue;
+
+		}else if(ch == '~')
+		{
+			while(ch != '\n')
+			{
+				ch = fgetc(input);
+			}
+			ungetc(ch, input);
+			++lineNo;
+			continue;
+
 		}else if(isdigit(ch))
 		{
 			printf("found digit");
-			/*begin
-				get the number into numLexeme
-				return NUM;
-				end
-			*/
-		
+			while(isdigit(ch))
+			{
+				ungetc(ch, input); //ch = getchar();
+				fscanf(input, "%d", &tokenVal);
+				numLexeme[NUMIndex] = tokenVal;
+				++NUMIndex;
+			}
+			return NUM;
+
 		}else if(isalpha(ch))
 		{
 			printf("found a letter");
-			/*begin
-				get the identifier into idlexeme
-				typer = lookup(ID);
-				if(type == NOT_FOUND)
+			while(isalpha(ch))
+			{
+				 //ch = getchar();
+				idLexeme[IDIndex] = ch;
+				++IDIndex;
+				while((isalnum(ch)) || (ch == '_'))
 				{
-					insert value into symbolTable
-					return ID;
-				}else
-				{
-					return type;
+					ch = fgetc(input);
+					idLexeme[IDIndex] = ch;
+					++IDIndex;
 				}
-				end
-			*/
+			}
+			ungetc(ch, input);
+			idLexeme[IDIndex - 1] = '\0';
+			type = lookup(idLexeme);
+
+			if(type == ID)
+			{
+				strcpy(symTable[symbolIndex].name, idLexeme);
+				symTable[symbolIndex].value = ID;//insertValue into symbolTable;
+				++symbolIndex;
+
+			}else if(type == BEGIN)
+			{
+				strcpy(symTable[symbolIndex].name, idLexeme);
+				symTable[symbolIndex].value = BEGIN;//insertValue into symbolTable;
+				++symbolIndex;
+				
+			}else if(type == END)
+			{
+				strcpy(symTable[symbolIndex].name, idLexeme);
+				symTable[symbolIndex].value = END;//insertValue into symbolTable;
+				++symbolIndex;
+				
+			}
+			return type;
 		}else if(ch == EOF)
 		{
 			return DONE;
 		}else
 		{
 			return ch;
-		}
-		//end while loop 
+		}//end while loop 
 	}
 	//end lexan
 }
 
-void match(int t, char * message)
+
+int lookup(char s[])
 {
-	
+	if(s[IDIndex - 2] == '_')
+	{
+		return ERROR;
+	}else if(s == "begin")
+	{
+		return BEGIN;
+	}else if(s == "end.")
+	{
+		return END;
+	}else
+	{
+		return ID;			
+	}
 }
 
-void showLexemes()
+int getLine()
 {
-	
+	return lineNo;
 }

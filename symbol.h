@@ -3,9 +3,15 @@
 #include "lexer.h"
 
 
-struct entry symTable[1000];
-int lookup(char s[]);
-int insert(char s[]);
-//char expression[500];
+typedef struct entry
+{
+	char name[100];
+	int value;
+}entry;
+
+void setName(char*);
+char* getName();
+void setValue(int);
+int getValue();
 
 #endif

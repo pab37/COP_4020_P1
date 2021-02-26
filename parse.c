@@ -1,15 +1,20 @@
 #include "parse.h"
+//#include "lexer.h"
 
 void statement()
 {
-	printf("in statement");
+	//printf("in statement");
 	lookahead = lexan();
 
 	match(BEGIN, "Missing \"begin\" statement.\n");
 
 	while(lookahead != END)
 	{
-		AssignStmt();
+		match(ID, "Only identifiers can be assigned here");
+		match('=',"Missing the \"=\" operator.\n" );
+		expression();
+		match(';', "Missing \";\" symbol.\n");
+			
 	}
 
 	match(END, "Missing \"end.\".\n");
@@ -18,27 +23,19 @@ void statement()
 	if(lookahead == EOF)
 	{
 		printf("success.\n");
-		printf("\n");
-		printf("Symbols Identified:\n\n");
-		printf("Token\tToken Value\n");
-
-		for(int i = 0; i < 100; ++i)
-		{
-			if(symTable[i].value != 0)
-			{
-				printf("%s\t%d\n", symTable[i].name, symTable[i].value);
-			}
-		}
+		display();
 	}
 }
 
+/*
 void AssignStmt()
 {
 	match(ID, "Only identifiers are allowed here.\n");
-	match(lookahead, "Missing \"=\" operator.\n");
+	match('=', "Missing \"=\" operator.\n");
 	expression();
 	match(';', "Missing \";\" symbol.\n");
 }
+*/
 
 void expression()
 {
@@ -87,11 +84,11 @@ void match(int t, char * message)
 		lookahead = lexan();
 	}else
 	{
-		printf("ERROR on line %d: %s", getLine(), message);
+		printf(" ERROR on line %d: %s", getLine(), message);
 		
 		if(lookahead == ERROR)
 		{
-			printf("ERROR: Identifiers can not end with \"_\".\n");
+			printf(" ERROR: Identifiers can not end with \"_\".\n");
 		}
 		exit(-1);
 	}

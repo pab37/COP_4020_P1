@@ -5,7 +5,6 @@
 #include <string.h>
 #include <ctype.h>
 #include "lexer.h"
-#include "symbol.h"
 #define EOS '\0'
 #define NUM 256
 #define DIV 257
@@ -17,15 +16,12 @@
 #define NOT_FOUND 0
 #define ERROR 401
 
-
-int tokenVal;
-int lineNo;
 int lookahead;
 char *token;
 
 void match(int t, char * message);
 void statement();
-void AssignStmt();
+//void AssignStmt();
 void expression();
 void term();
 void factor();

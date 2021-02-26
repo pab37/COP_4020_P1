@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "parse.h"
-#include "lexer.h"
-#include "symbol.h"
+#include <string.h>
+//#include "lexer.h"
+//#include "parse.h"
 
 int main(int argc, char* argv[])
 {

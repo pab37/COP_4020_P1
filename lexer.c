@@ -1,9 +1,12 @@
 #include "lexer.h"
+//#include "symbol.h"
 
-void processFile(char *fp)
+entry symTable[1000];
+
+void processFile(char *file)
 {
-	printf("opening file");
-	input = fopen(fp,"r+");
+	//printf("opening file");
+	input = fopen(file,"r+");
 }
 
 int lexan()
@@ -34,31 +37,28 @@ int lexan()
 
 		}else if(isdigit(ch))
 		{
-			printf("found digit");
-			while(isdigit(ch))
-			{
-				ungetc(ch, input); //ch = getchar();
-				fscanf(input, "%d", &tokenVal);
-				numLexeme[NUMIndex] = tokenVal;
-				++NUMIndex;
-			}
+			//printf("found digit ");
+			ungetc(ch, input); //ch = getchar();
+			fscanf(input, "%d", &tokenVal);
+			numLexeme[NUMIndex] = tokenVal;
+			++NUMIndex;
+			
 			return NUM;
 
 		}else if(isalpha(ch))
-		{
-			printf("found a letter");
-			while(isalpha(ch))
+		{	
+			int type;
+			IDIndex = 0;
+			//printf("found a letter ");
+			idLexeme[IDIndex] = ch;
+			++IDIndex;
+			while((isalnum(ch)) || (ch == '_'))
 			{
-				 //ch = getchar();
+				ch = fgetc(input);
 				idLexeme[IDIndex] = ch;
 				++IDIndex;
-				while((isalnum(ch)) || (ch == '_'))
-				{
-					ch = fgetc(input);
-					idLexeme[IDIndex] = ch;
-					++IDIndex;
-				}
 			}
+		
 			ungetc(ch, input);
 			idLexeme[IDIndex - 1] = '\0';
 			type = lookup(idLexeme);
@@ -100,10 +100,10 @@ int lookup(char s[])
 	if(s[IDIndex - 2] == '_')
 	{
 		return ERROR;
-	}else if(s == "begin")
+	}else if(strcmp(s, "begin") == 0)
 	{
 		return BEGIN;
-	}else if(s == "end.")
+	}else if(strcmp(s, "end.") == 0)
 	{
 		return END;
 	}else
@@ -115,4 +115,19 @@ int lookup(char s[])
 int getLine()
 {
 	return lineNo;
+}
+
+void display()
+{
+	printf("\n");
+	printf("Symbols Identified:\n\n");
+	printf("Token\tToken Value\n");
+
+	for(int i = 0; i < 100; ++i)
+	{
+		if(symTable[i].value != 0)
+		{
+			printf("%s\t%d\n", symTable[i].name, symTable[i].value);
+		}
+	}
 }

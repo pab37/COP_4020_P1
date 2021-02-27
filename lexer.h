@@ -7,7 +7,6 @@
 #include <stdbool.h>
 //#include "parse.h"
 #include "symbol.h"
-#define EOS '\0'
 #define NUM 256
 #define DIV 257
 #define MOD 258
@@ -19,7 +18,7 @@
 #define ERROR 401
 
 int tokenVal;
-static int lineNo = 1;
+
 int IDIndex;
 int NUMIndex;
 int symbolIndex;
@@ -29,7 +28,7 @@ char idLexeme[100];
 FILE* input;
 
 int lexan();
-int lookup(char s[]);
+int lookup(char*);
 void processFile(char*);
 int getLine();
 void display();

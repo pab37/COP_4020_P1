@@ -5,7 +5,6 @@
 #include <string.h>
 #include <ctype.h>
 #include "lexer.h"
-#define EOS '\0'
 #define NUM 256
 #define DIV 257
 #define MOD 258

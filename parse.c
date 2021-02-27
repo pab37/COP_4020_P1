@@ -17,14 +17,10 @@ void statement()
 			
 	}
 
-	match(END, "Missing \"end.\".\n");
+	match(END, "Missing \"end\".\n");
 	match('.', "Missing \".\" symbol.\n");
-
-	if(lookahead == EOF)
-	{
-		printf("success.\n");
-		display();
-	}
+	printf("success.\n");
+	display();
 }
 
 /*
